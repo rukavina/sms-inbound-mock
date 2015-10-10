@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-4": {
+            "PremiumMock\\": "src/PremiumMock/"
+        }
+    },    
+    "require": {
+        "predis/predis-async": "dev-master",
+        "cboden/ratchet": "0.3.*",
+        "monolog/monolog": "1.0.*"
+    }
+}
