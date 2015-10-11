@@ -6,7 +6,10 @@ return array(
         'provider'  => 'SWISSCOM',
         'language'  => 'EN'
     ),
-    'mt'    => array(
+    'client'    => array(
+        'log_file'  => 'data/log/client.log',
+    ),
+    'mt'    => array(        
         'url'       => 'http://127.0.0.1/work/hpro2/sms-inbound-mock/public/mt-server.php',
         'account'   => 'demo',
         'username'  => 'demo',

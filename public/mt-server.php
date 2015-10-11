@@ -7,6 +7,10 @@ $config = require dirname(__DIR__) . '/config.php';
 
 $client = new PredisClient($config['redis_conn_url']);
 
+$mtNum  = (int)$client->get('mt_num');
+$mtNum++;
+$client->set('mt_num', $mtNum);
+
 $client->publish('premiummockmt', json_encode($_REQUEST));
 
 $client->quit();
@@ -14,6 +18,6 @@ $client->quit();
 echo '<?xml version="1.0"?>
 <report>
     <status>success</status>
-    <msg_id>65343</msg_id>
+    <msg_id>' . $mtNum . '</msg_id>
 </report>';
 

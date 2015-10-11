@@ -11,6 +11,8 @@ After git clone do
 ```
 composer install
 cp dist.config.php config.php
+touch data/log/client.log
+chmod 777 data/log/client.log
 cd public
 bower install
 ```

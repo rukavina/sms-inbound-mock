@@ -37,26 +37,35 @@
                         </form>                          
                     </div>
                     <div id="requestsection" style="display:none">
-                        <h2>Request</h2>
-                        <form id="request">
-                            <div class="form-group">
-                                <label for="url">Destination url</label>
-                                <input type="text" class="form-control" id="url" placeholder="eg. http://yourdomain/callback.php" value="http://127.0.0.1/work/hpro2/sms-inbound-mock/public/client-test.php">
-                            </div>                        
-                            <div class="form-group">
-                                <label for="short_id">Destination number</label>
-                                <input type="tel" class="form-control" id="short_id" placeholder="SHORT ID, eg. 919" value="919">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h2>Request</h2>
+                                <form id="request">
+                                    <div class="form-group">
+                                        <label for="url">Destination url</label>
+                                        <input type="text" class="form-control" id="url" placeholder="eg. http://yourdomain/callback.php" value="http://127.0.0.1/work/hpro2/sms-inbound-mock/public/client-test.php">
+                                    </div>                        
+                                    <div class="form-group">
+                                        <label for="short_id">Destination number</label>
+                                        <input type="tel" class="form-control" id="short_id" placeholder="SHORT ID, eg. 919" value="919">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="from">Sender number</label>
+                                        <input type="tel" class="form-control" id="from" placeholder="Sender phone, eg. 41587000200" value="41587000200">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text">Message</label>
+                                        <input type="text" class="form-control" id="text" placeholder="Your sms message" value="icard cocacola 123456">
+                                    </div>
+                                    <button type="button" class="btn btn-default" id="sendBtn">Send</button>
+                                </form>                                 
                             </div>
-                            <div class="form-group">
-                                <label for="from">Sender number</label>
-                                <input type="tel" class="form-control" id="from" placeholder="Sender phone, eg. 41587000200" value="41587000200">
-                            </div>
-                            <div class="form-group">
-                                <label for="text">Message</label>
-                                <input type="text" class="form-control" id="text" placeholder="Your sms message" value="icard cocacola 123456">
-                            </div>
-                            <button type="button" class="btn btn-default" id="sendBtn">Send</button>
-                        </form>                         
+                            <div class="col-lg-6">
+                                <h2>Response SMS</h2>
+                                <blockquote id="responseText"></blockquote>
+                                <span class="badge" id="responsePrice"></span>                    
+                            </div>                            
+                        </div>                        
                     </div>                   
                 </div>
                 <div class="col-md-6">

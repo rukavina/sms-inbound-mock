@@ -39,6 +39,8 @@ var app = {
                     break;
                 case 'mt':
                     toastr.success('MT success');
+                    $('#responseText').text(msg.data.text);
+                    $('#responsePrice').text(msg.data.price);
                     self.logData(msg.data);
                     break;                    
             }                        
