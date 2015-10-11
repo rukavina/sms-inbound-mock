@@ -4,13 +4,25 @@ namespace PremiumMock;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use GuzzleHttp\Client as HttpClient;
 
 class PremiumMockApp implements MessageComponentInterface {
 
     protected $clients;
+    protected $msgCounter = 0;
+    
+    /**
+     *
+     * @var HttpClient 
+     */
+    protected $httpClient;
+    
+    protected $config;
 
-    public function __construct() {
+    public function __construct(array $config) {
         $this->clients = new \SplObjectStorage;
+        $this->httpClient = new HttpClient();
+        $this->config = $config;
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -20,8 +32,12 @@ class PremiumMockApp implements MessageComponentInterface {
         echo "New connection! ({$conn->resourceId})\n";
     }
     
-    public function broadcast($message, $from = null)
+    public function broadcast($messageType, array $messageData, $from = null)
     {
+        $message = json_encode(array(
+            'type'  => $messageType,
+            'data'  => $messageData
+        ));
         foreach ($this->clients as $client) {
             if ($from !== $client) {
                 // The sender is not the receiver, send to each client connected
@@ -29,17 +45,57 @@ class PremiumMockApp implements MessageComponentInterface {
             }
         }        
     }
+    
+    public function sendError($message)
+    {
+        $this->broadcast('error', array('message' => $message));
+    }
+    
+    public function processMt(array $parameters)
+    {
+        $this->broadcast('mt', $parameters);
+    }
+    
+    protected function parseXMLResponse($xmlstring)
+    {
+        $xml = simplexml_load_string($xmlstring);
+        $json = json_encode($xml);
+        return json_decode($json,TRUE);        
+    }
+    
+    public function postMo(array $messageArr)
+    {
+        try {
+            $this->msgCounter++;
+            $words = explode(' ', $messageArr['text']);
+            $moParams = array_merge($this->config['mo'], $messageArr, array(
+                'message_id' => $this->msgCounter,
+                'keyword'   => $words[0] . '@' . $messageArr['short_id']
+            ));
+            echo "Posting params from MO to client @" . $messageArr['url'] . ': ' . json_encode($moParams) . "\n";
+            $response = $this->httpClient->request('POST', $messageArr['url'], [
+                'form_params' => $moParams
+            ]);
+            if($response->getStatusCode() != 200){
+                return $this->sendError($response->getBody());
+            }
+            $responseBody = $response->getBody();
+            echo 'received MO reply:' . $responseBody . "\n";
+            $this->broadcast('mo_reply', array('message' => $this->parseXMLResponse($responseBody)));
+        } catch (\Exception $exc) {
+            $this->sendError($exc->getMessage());
+        }      
+    }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-                , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+        $message = json_decode($msg, true);
+        switch ($message['type']) {
+            case 'mo':
+                $this->postMo($message['data']);
+                break;
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
-            }
+            default:
+                break;
         }
     }
 
@@ -52,7 +108,6 @@ class PremiumMockApp implements MessageComponentInterface {
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
         echo "An error has occurred: {$e->getMessage()}\n";
-
         $conn->close();
     }
 
