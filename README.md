@@ -11,10 +11,14 @@ After git clone do
 ```
 composer install
 cp dist.config.php config.php
+# update configphp
 touch data/log/client.log
 chmod 777 data/log/client.log
 cd public
 bower install
+cd js
+cp dist.config.js config.js
+# update config.js
 ```
 
 and then update config.php with your data
@@ -26,7 +30,7 @@ You will need to install *redis* server as well
 in order to run MO websocket server execute
 
 ```
-php scripts/mo-server.php
+php script/mo-server.php
 ```
 
 

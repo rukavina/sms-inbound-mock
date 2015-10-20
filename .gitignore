@@ -2,3 +2,4 @@
 composer.lock
 config.php
 /public/bower_components
+/public/js/config.js

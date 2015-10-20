@@ -73,8 +73,8 @@ class PremiumMockApp implements MessageComponentInterface {
                 'keyword'   => $words[0] . '@' . $messageArr['short_id']
             ));
             echo "Posting params from MO to client @" . $messageArr['url'] . ': ' . json_encode($moParams) . "\n";
-            $response = $this->httpClient->request('POST', $messageArr['url'], [
-                'form_params' => $moParams
+            $response = $this->httpClient->post($messageArr['url'], [
+                'body' => $moParams
             ]);
             if($response->getStatusCode() != 200){
                 return $this->sendError($response->getBody());

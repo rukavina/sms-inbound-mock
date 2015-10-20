@@ -22,8 +22,8 @@ echo '<?xml version="1.0"?>
 //send MT
 $httpClient = new HttpClient();
 $mtParams = array_merge($_POST, $config['mt']);
-$response = $httpClient->request('POST', $config['mt']['url'], [
-    'form_params' => $mtParams
+$response = $httpClient->post($config['mt']['url'], [
+    'body' => $mtParams
 ]);
 
 $log->addInfo('Received MT REPLY: ' . $response->getBody());
