@@ -46,9 +46,9 @@ class PremiumMockApp implements MessageComponentInterface {
         }        
     }
     
-    public function sendError($message)
+    public function sendError($message, $details = null)
     {
-        $this->broadcast('error', array('message' => $message));
+        $this->broadcast('error', array('message' => $message, 'details' => $details));
     }
     
     public function processMt(array $parameters)
@@ -83,8 +83,18 @@ class PremiumMockApp implements MessageComponentInterface {
             $responseBody = $response->getBody();
             echo 'received MO reply:' . $responseBody . "\n";
             $this->broadcast('mo_reply', array('message' => $this->parseXMLResponse($responseBody)));
+        } catch(\GuzzleHttp\Exception\RequestException $requestException){
+            echo 'received MO reply error of class [' . get_class($requestException) . '] and message: '  . $requestException->getMessage() .  "\n";
+            if($requestException->hasResponse()){
+                echo "\nbody: " . $requestException->getResponse()->getBody() . "\n";
+                echo "\ncode: " . $requestException->getResponse()->getStatusCode() . "\n";
+                
+                $this->sendError($requestException->getMessage(), $this->parseXMLResponse($requestException->getResponse()->getBody()));
+            }
+            $this->sendError($requestException->getMessage());            
+            
         } catch (\Exception $exc) {
-            echo 'received MO reply error message: '  . $exc->getMessage() .  "\n";
+            echo 'received MO reply error of class [' . get_class($exc) . '] and message: '  . $exc->getMessage() .  "\n";            
             $this->sendError($exc->getMessage());
         }      
     }

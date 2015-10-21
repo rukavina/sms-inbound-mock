@@ -32,6 +32,7 @@ var app = {
             switch (msg.type){
                 case 'error':
                     toastr.error(msg.data.message);
+                    self.logData(msg.data.details);
                     break;
                 case 'mo_reply':
                     toastr.success('MO reply success');
