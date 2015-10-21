@@ -77,12 +77,14 @@ class PremiumMockApp implements MessageComponentInterface {
                 'body' => $moParams
             ]);
             if($response->getStatusCode() != 200){
+                echo 'received MO reply with status code: ' .$response->getStatusCode() . ', and body' . $response->getBody() . "\n";
                 return $this->sendError($response->getBody());
             }
             $responseBody = $response->getBody();
             echo 'received MO reply:' . $responseBody . "\n";
             $this->broadcast('mo_reply', array('message' => $this->parseXMLResponse($responseBody)));
         } catch (\Exception $exc) {
+            echo 'received MO reply error message: '  . $exc->getMessage() .  "\n";
             $this->sendError($exc->getMessage());
         }      
     }
