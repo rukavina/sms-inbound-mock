@@ -10,7 +10,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $config = require dirname(__DIR__) . '/config.php';
 
 $mockApp = new PremiumMockApp($config);
-$server = IoServer::factory(new HttpServer(new WsServer($mockApp)), 8080);
+$server = IoServer::factory(new HttpServer(new WsServer($mockApp)), $config['ws_port']);
 
 $client = new PredisClient($config['redis_conn_url'], $server->loop);
 

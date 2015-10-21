@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'ws_port'       => 8080,
     'redis_conn_url'    => 'tcp://127.0.0.1:6379',
     'mo'    => array(
         'provider'  => 'SWISSCOM',
