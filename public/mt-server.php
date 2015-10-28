@@ -11,7 +11,13 @@ $mtNum  = (int)$client->get('mt_num');
 $mtNum++;
 $client->set('mt_num', $mtNum);
 
-$client->publish('premiummockmt', json_encode($_REQUEST));
+//encode utf-8
+$encRequest = array();
+foreach ($_REQUEST as $key => $value) {
+    $encRequest[$key] = utf8_encode($value);
+}
+
+$client->publish('premiummockmt', json_encode($encRequest));
 
 $client->quit();
 
