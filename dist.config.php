@@ -16,7 +16,9 @@ return array(
         'username'  => 'demo',
         'password'  => 'demo',
         'text'      => 'Hello there!',
-        'price'     => 60
+        'price'     => 60,
+        'dlr_url'   => 'http://127.0.0.1/sms-inbound-mock/public/dlr-test.php',
+        'dlr_status'=> 1
     )
 );
 
