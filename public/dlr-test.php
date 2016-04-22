@@ -10,4 +10,4 @@ $config = require dirname(__DIR__) . '/config.php';
 $log = new Logger('clientlog');
 $log->pushHandler(new StreamHandler(dirname(__DIR__) . '/' . $config['client']['log_file']));
 
-$log->addInfo('Received DLR', $_POST);
+$log->addInfo('Received DLR', $_GET);

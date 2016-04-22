@@ -63,6 +63,6 @@ foreach ($dlrParams as $key => $value) {
     }
 }
 
-$response = $httpClient->post($config['mt']['dlr_url'], [
-    'body' => $dlrParams
+$response = $httpClient->get($config['mt']['dlr_url'], [
+    'query' => $dlrParams
 ]);
