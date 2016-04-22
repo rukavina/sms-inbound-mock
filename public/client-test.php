@@ -23,6 +23,9 @@ echo '<?xml version="1.0"?>
 $httpClient = new HttpClient();
 $mtParams = array_merge($_POST, $config['mt']);
 
+$mtParams['to'] = $mtParams['from'];
+unset($mtParams['from']);
+
 $log->info('Sending MT with body: ', $mtParams);
 
 $response = $httpClient->post($config['mt']['url'], [

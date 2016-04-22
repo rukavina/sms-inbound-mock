@@ -49,7 +49,7 @@ sleep(2);
 
 $httpClient = new HttpClient();
 $dlrParams = array(
-    'mobile' => $_REQUEST['from'],
+    'mobile' => $_REQUEST['to'],
     'short_id' => null,
     'int_id' => $mtNum,
     'ext_id' => null,
