@@ -3,9 +3,37 @@
 use Predis\Client as PredisClient;
 use GuzzleHttp\Client as HttpClient;
 
-ob_start();
 require dirname(__DIR__) . '/vendor/autoload.php';
 $config = require dirname(__DIR__) . '/config.php';
+
+$errorMap = [
+    1 => 'Authorization failed.',
+    2 => 'Invalid international phone number.',
+    3 => 'Wrong provider name.',
+    4 => 'Wrong short id.',
+    5 => 'The text parameter is missing or it is too long.',
+    6 => 'Wrong end user price.',
+    7 => 'The maximum message count in time (per user) is exceeded.',
+    8 => 'WSI is longer than single SMS. Please, make shorter text or wsi_url.',
+    9 => 'User is not subscribed on service any more.',
+    9 => 'Wrong keyword.',
+    98 => 'Message submission to the SMS gate failed.',
+    99 => 'Internal error.',    
+];
+
+//if error_code set just response with error xml
+$errorCode = isset($config['mt']['error_code'])? $config['mt']['error_code']: null;
+if($errorCode){
+    echo '<?xml version="1.0"?>
+    <report>
+        <status>error</status>
+        <error_code>' . $errorCode . '</error_code>
+        <error_desc>' . htmlspecialchars($errorMap[$errorCode]) . '</error_desc>
+    </report>';
+    exit;
+}
+
+ob_start();
 
 $client = new PredisClient($config['redis_conn_url']);
 

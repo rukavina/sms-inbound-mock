@@ -18,7 +18,8 @@ return array(
         'text'      => 'Hello there!',
         'price'     => 60,
         'dlr_url'   => 'http://127.0.0.1/sms-inbound-mock/public/dlr-test.php',
-        'dlr_status'=> 1
+        'dlr_status'=> 1,
+        //'error_code'=> 99, //set it you want to test negative mt reply
     )
 );
 
