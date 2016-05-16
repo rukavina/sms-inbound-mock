@@ -40,7 +40,7 @@ var app = {
                     break;
                 case 'mt':
                     toastr.success('MT success');
-                    $('#responseText').text(msg.data.text);
+                    $('#responseText').html(self.nl2br(msg.data.text));
                     $('#responsePrice').text(msg.data.price);
                     self.logData(msg.data);
                     break;                    
@@ -70,6 +70,9 @@ var app = {
                 'url': $('#url').val()
             });
         });        
+    },
+    nl2br: function(text){
+        return text.replace(/(?:\r\n|\r|\n)/g, '<br>');
     },
     logLine: function(line){
         console.log(line);
